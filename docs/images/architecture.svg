@@ -1,22 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="740" viewBox="0 0 1300 740" font-family="'DejaVu Sans','Segoe UI',Arial,sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="740" viewBox="0 0 1300 740" font-family="Segoe UI, Arial, sans-serif">
   <defs>
     <marker id="arr"  markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#8b949e"/></marker>
     <marker id="arrg" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#3fb950"/></marker>
     <marker id="arrb" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#2f81f7"/></marker>
     <marker id="arrc" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#39c5cf"/></marker>
-    <style>
-      .panel{ fill:#161b22; stroke:#30363d; stroke-width:1.5; }
-      .cluster{ fill:#0f1620; stroke:#39c5cf; stroke-width:1.5; stroke-dasharray:7 5; }
-      .t{ fill:#e6edf3; }
-      .m{ fill:#8b949e; }
-      .title{ fill:#e6edf3; font-weight:bold; }
-      .edge{ stroke:#8b949e; stroke-width:2; fill:none; }
-      .edge-g{ stroke:#3fb950; stroke-width:2.4; fill:none; }
-      .edge-b{ stroke:#2f81f7; stroke-width:2.4; fill:none; }
-      .edge-c{ stroke:#39c5cf; stroke-width:2; fill:none; }
-      .dash{ stroke:#8b949e; stroke-width:1.6; fill:none; stroke-dasharray:5 4; }
-      .lbl{ fill:#8b949e; font-size:11px; }
-    </style>
   </defs>
 
   <!-- canvas -->
@@ -27,142 +14,142 @@
   <rect y="56" width="1300" height="3" fill="#39c5cf"/>
   <circle cx="32" cy="28" r="13" fill="none" stroke="#ffffff" stroke-width="2.2"/>
   <circle cx="32" cy="28" r="4.5" fill="#39c5cf"/>
-  <text x="56" y="25" class="title" font-size="19">SLO-Based Automated Canary Deployment Platform</text>
-  <text x="56" y="44" font-size="12.5" fill="#cfe0ff">Architecture — progressive, SLO-gated delivery</text>
-  <text x="1268" y="34" text-anchor="end" font-size="13" font-weight="bold" fill="#ffffff">DevOps · SRE</text>
+  <text x="56" y="25" fill="#ffffff" font-weight="bold" font-size="19">SLO-Based Automated Canary Deployment Platform</text>
+  <text x="56" y="44" fill="#cfe0ff" font-size="12.5">Architecture — progressive, SLO-gated delivery</text>
+  <text x="1268" y="34" text-anchor="end" fill="#ffffff" font-weight="bold" font-size="13">DevOps · SRE</text>
 
   <!-- footer -->
   <rect y="710" width="1300" height="30" fill="#0a0d12"/>
-  <text x="16" y="729" class="lbl">Kubernetes · Argo Rollouts · ArgoCD · NGINX · Prometheus · Grafana · Alertmanager · Trivy · k6</text>
-  <text x="1284" y="729" text-anchor="end" class="lbl">Git is the single source of truth</text>
+  <text x="16" y="729" fill="#8b949e" font-size="11">Kubernetes · Argo Rollouts · ArgoCD · NGINX · Prometheus · Grafana · Alertmanager · Trivy · k6</text>
+  <text x="1284" y="729" text-anchor="end" fill="#8b949e" font-size="11">Git is the single source of truth</text>
 
   <!-- ============ LEFT: CI / GitOps ============ -->
   <!-- GitHub Actions CI -->
-  <rect class="panel" x="40" y="95" width="300" height="150" rx="9"/>
+  <rect x="40" y="95" width="300" height="150" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
   <circle cx="56" cy="116" r="5" fill="#2f81f7"/>
-  <text x="68" y="120" class="title" font-size="14">GitHub Actions — CI</text>
-  <text x="58" y="146" class="m" font-size="12">• build + unit test (go test)</text>
-  <text x="58" y="168" class="m" font-size="12">• Trivy scan + cosign sign</text>
-  <text x="58" y="190" class="m" font-size="12">• push image → GHCR</text>
-  <text x="58" y="212" class="m" font-size="12">• bump tag in rollout.yaml</text>
-  <text x="58" y="234" class="m" font-size="11" fill="#6e7681">DevSecOps gate before release</text>
+  <text x="68" y="120" fill="#e6edf3" font-weight="bold" font-size="14">GitHub Actions — CI</text>
+  <text x="58" y="146" fill="#8b949e" font-size="12">• build + unit test (go test)</text>
+  <text x="58" y="168" fill="#8b949e" font-size="12">• Trivy scan + cosign sign</text>
+  <text x="58" y="190" fill="#8b949e" font-size="12">• push image → GHCR</text>
+  <text x="58" y="212" fill="#8b949e" font-size="12">• bump tag in rollout.yaml</text>
+  <text x="58" y="234" fill="#6e7681" font-size="11">DevSecOps gate before release</text>
 
   <!-- ArgoCD -->
-  <rect class="panel" x="40" y="285" width="300" height="110" rx="9"/>
+  <rect x="40" y="285" width="300" height="110" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
   <circle cx="56" cy="306" r="5" fill="#3fb950"/>
-  <text x="68" y="310" class="title" font-size="14">ArgoCD — GitOps</text>
-  <text x="58" y="336" class="m" font-size="12">reconciles deploy/k8s → cluster</text>
-  <text x="58" y="358" class="m" font-size="12">auto-sync · self-heal · prune</text>
-  <text x="58" y="380" class="m" font-size="11" fill="#6e7681">app Synced · Healthy</text>
+  <text x="68" y="310" fill="#e6edf3" font-weight="bold" font-size="14">ArgoCD — GitOps</text>
+  <text x="58" y="336" fill="#8b949e" font-size="12">reconciles deploy/k8s → cluster</text>
+  <text x="58" y="358" fill="#8b949e" font-size="12">auto-sync · self-heal · prune</text>
+  <text x="58" y="380" fill="#6e7681" font-size="11">app Synced · Healthy</text>
 
   <!-- CI -> ArgoCD -->
-  <path class="edge" d="M190,245 V283" marker-end="url(#arr)"/>
-  <text x="198" y="269" class="lbl">git push tag → bump manifest</text>
+  <path d="M190,245 V283" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="198" y="269" fill="#8b949e" font-size="11">git push tag → bump manifest</text>
 
   <!-- ============ CLUSTER ============ -->
-  <rect class="cluster" x="380" y="90" width="620" height="590" rx="12"/>
-  <text x="396" y="112" font-size="13" font-weight="bold" fill="#39c5cf">Kubernetes cluster</text>
+  <rect x="380" y="90" width="620" height="590" rx="12" fill="#0f1620" stroke="#39c5cf" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="396" y="112" fill="#39c5cf" font-weight="bold" font-size="13">Kubernetes cluster</text>
 
   <!-- Argo Rollouts controller -->
-  <rect class="panel" x="405" y="128" width="240" height="86" rx="9"/>
+  <rect x="405" y="128" width="240" height="86" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
   <circle cx="421" cy="149" r="5" fill="#ef7b4d"/>
-  <text x="433" y="153" class="title" font-size="13.5">Argo Rollouts</text>
-  <text x="423" y="177" class="m" font-size="12">canary strategy · analysis</text>
-  <text x="423" y="197" class="m" font-size="12">5% → 25% → 50% → 100%</text>
+  <text x="433" y="153" fill="#e6edf3" font-weight="bold" font-size="13.5">Argo Rollouts</text>
+  <text x="423" y="177" fill="#8b949e" font-size="12">canary strategy · analysis</text>
+  <text x="423" y="197" fill="#8b949e" font-size="12">5% → 25% → 50% → 100%</text>
 
   <!-- NGINX ingress -->
-  <rect class="panel" x="405" y="300" width="240" height="86" rx="9"/>
+  <rect x="405" y="300" width="240" height="86" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
   <circle cx="421" cy="321" r="5" fill="#39c5cf"/>
-  <text x="433" y="325" class="title" font-size="13.5">NGINX Ingress</text>
-  <text x="423" y="349" class="m" font-size="12">weighted traffic split</text>
-  <text x="423" y="369" class="m" font-size="12">canary-weight annotation</text>
+  <text x="433" y="325" fill="#e6edf3" font-weight="bold" font-size="13.5">NGINX Ingress</text>
+  <text x="423" y="349" fill="#8b949e" font-size="12">weighted traffic split</text>
+  <text x="423" y="369" fill="#8b949e" font-size="12">canary-weight annotation</text>
 
   <!-- canary pod -->
-  <rect class="panel" x="690" y="258" width="250" height="76" rx="9" stroke="#3fb950"/>
+  <rect x="690" y="258" width="250" height="76" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
   <rect x="690" y="258" width="6" height="76" rx="3" fill="#3fb950"/>
   <circle cx="712" cy="280" r="5" fill="#3fb950"/>
-  <text x="724" y="284" class="title" font-size="13.5">checkout · canary</text>
-  <text x="714" y="310" class="m" font-size="12">v2.4.0 · /metrics · /healthz</text>
-  <text x="714" y="328" class="m" font-size="11" fill="#6e7681">receives 5→100% of traffic</text>
+  <text x="724" y="284" fill="#e6edf3" font-weight="bold" font-size="13.5">checkout · canary</text>
+  <text x="714" y="310" fill="#8b949e" font-size="12">v2.4.0 · /metrics · /healthz</text>
+  <text x="714" y="328" fill="#6e7681" font-size="11">receives 5→100% of traffic</text>
 
   <!-- stable pod -->
-  <rect class="panel" x="690" y="378" width="250" height="76" rx="9" stroke="#2f81f7"/>
+  <rect x="690" y="378" width="250" height="76" rx="9" fill="#161b22" stroke="#2f81f7" stroke-width="1.5"/>
   <rect x="690" y="378" width="6" height="76" rx="3" fill="#2f81f7"/>
   <circle cx="712" cy="400" r="5" fill="#2f81f7"/>
-  <text x="724" y="404" class="title" font-size="13.5">checkout · stable</text>
-  <text x="714" y="430" class="m" font-size="12">v2.3.0 · /metrics · /healthz</text>
-  <text x="714" y="448" class="m" font-size="11" fill="#6e7681">receives 95→0% of traffic</text>
+  <text x="724" y="404" fill="#e6edf3" font-weight="bold" font-size="13.5">checkout · stable</text>
+  <text x="714" y="430" fill="#8b949e" font-size="12">v2.3.0 · /metrics · /healthz</text>
+  <text x="714" y="448" fill="#6e7681" font-size="11">receives 95→0% of traffic</text>
 
   <!-- ArgoCD -> Rollouts -->
-  <path class="edge-g" d="M340,330 C376,330 376,170 403,170" marker-end="url(#arrg)"/>
-  <text x="352" y="250" class="lbl" fill="#3fb950">sync</text>
+  <path d="M340,330 C376,330 376,170 403,170" fill="none" stroke="#3fb950" stroke-width="2.4" marker-end="url(#arrg)"/>
+  <text x="352" y="250" fill="#3fb950" font-size="11">sync</text>
 
   <!-- live traffic -> ingress -->
-  <path class="edge-c" d="M345,343 H403" marker-end="url(#arrc)"/>
-  <text x="346" y="335" class="lbl" fill="#39c5cf">live traffic / k6</text>
+  <path d="M345,343 H403" fill="none" stroke="#39c5cf" stroke-width="2" marker-end="url(#arrc)"/>
+  <text x="346" y="335" fill="#39c5cf" font-size="11">live traffic / k6</text>
 
   <!-- Rollouts controls ingress weight -->
-  <path class="dash" d="M525,214 V298" marker-end="url(#arr)"/>
-  <text x="533" y="262" class="lbl">sets weight</text>
+  <path d="M525,214 V298" fill="none" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="533" y="262" fill="#8b949e" font-size="11">sets weight</text>
 
   <!-- ingress -> pods -->
-  <path class="edge-g" d="M645,326 C668,326 668,296 688,296" marker-end="url(#arrg)"/>
-  <text x="650" y="300" class="lbl" fill="#3fb950">5→100%</text>
-  <path class="edge-b" d="M645,360 C668,360 668,416 688,416" marker-end="url(#arrb)"/>
-  <text x="650" y="392" class="lbl" fill="#2f81f7">95→0%</text>
+  <path d="M645,326 C668,326 668,296 688,296" fill="none" stroke="#3fb950" stroke-width="2.4" marker-end="url(#arrg)"/>
+  <text x="650" y="300" fill="#3fb950" font-size="11">5→100%</text>
+  <path d="M645,360 C668,360 668,416 688,416" fill="none" stroke="#2f81f7" stroke-width="2.4" marker-end="url(#arrb)"/>
+  <text x="650" y="392" fill="#2f81f7" font-size="11">95→0%</text>
 
   <!-- ============ RIGHT: Observability / SLO gate ============ -->
   <!-- AnalysisTemplate SLO gate -->
-  <rect class="panel" x="1035" y="125" width="235" height="92" rx="9" stroke="#d29922"/>
+  <rect x="1035" y="125" width="235" height="92" rx="9" fill="#161b22" stroke="#d29922" stroke-width="1.5"/>
   <circle cx="1051" cy="146" r="5" fill="#d29922"/>
-  <text x="1063" y="150" class="title" font-size="13.5">AnalysisTemplate</text>
-  <text x="1053" y="174" class="m" font-size="12">SLO gate (every 30s)</text>
-  <text x="1053" y="194" class="m" font-size="11.5">err&lt;1% · p99&lt;500ms</text>
-  <text x="1053" y="210" class="m" font-size="11.5">pay≥99% · cpu&lt;80%</text>
+  <text x="1063" y="150" fill="#e6edf3" font-weight="bold" font-size="13.5">AnalysisTemplate</text>
+  <text x="1053" y="174" fill="#8b949e" font-size="12">SLO gate (every 30s)</text>
+  <text x="1053" y="194" fill="#8b949e" font-size="11.5">err&lt;1% · p99&lt;500ms</text>
+  <text x="1053" y="210" fill="#8b949e" font-size="11.5">pay≥99% · cpu&lt;80%</text>
 
   <!-- Prometheus -->
-  <rect class="panel" x="1035" y="295" width="235" height="72" rx="9"/>
+  <rect x="1035" y="295" width="235" height="72" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
   <circle cx="1051" cy="316" r="5" fill="#e6522c"/>
-  <text x="1063" y="320" class="title" font-size="13.5">Prometheus</text>
-  <text x="1053" y="346" class="m" font-size="12">SLO recording + alert rules</text>
+  <text x="1063" y="320" fill="#e6edf3" font-weight="bold" font-size="13.5">Prometheus</text>
+  <text x="1053" y="346" fill="#8b949e" font-size="12">SLO recording + alert rules</text>
 
   <!-- Grafana -->
-  <rect class="panel" x="1035" y="430" width="112" height="72" rx="9"/>
+  <rect x="1035" y="430" width="112" height="72" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
   <circle cx="1051" cy="451" r="5" fill="#f46800"/>
-  <text x="1063" y="455" class="title" font-size="12.5">Grafana</text>
-  <text x="1047" y="481" class="m" font-size="11">canary vs</text>
-  <text x="1047" y="496" class="m" font-size="11">stable</text>
+  <text x="1063" y="455" fill="#e6edf3" font-weight="bold" font-size="12.5">Grafana</text>
+  <text x="1047" y="481" fill="#8b949e" font-size="11">canary vs</text>
+  <text x="1047" y="496" fill="#8b949e" font-size="11">stable</text>
 
   <!-- Alertmanager -->
-  <rect class="panel" x="1160" y="430" width="110" height="72" rx="9"/>
+  <rect x="1160" y="430" width="110" height="72" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
   <circle cx="1176" cy="451" r="5" fill="#f85149"/>
-  <text x="1188" y="455" class="title" font-size="12">Alertmanager</text>
-  <text x="1172" y="481" class="m" font-size="11">fires on</text>
-  <text x="1172" y="496" class="m" font-size="11">rollback</text>
+  <text x="1188" y="455" fill="#e6edf3" font-weight="bold" font-size="12">Alertmanager</text>
+  <text x="1172" y="481" fill="#8b949e" font-size="11">fires on</text>
+  <text x="1172" y="496" fill="#8b949e" font-size="11">rollback</text>
 
   <!-- Slack -->
-  <rect class="panel" x="1160" y="540" width="110" height="56" rx="9"/>
+  <rect x="1160" y="540" width="110" height="56" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
   <circle cx="1176" cy="563" r="5" fill="#a371f7"/>
-  <text x="1188" y="567" class="title" font-size="12.5">Slack</text>
-  <text x="1172" y="588" class="m" font-size="11">#sre-oncall</text>
+  <text x="1188" y="567" fill="#e6edf3" font-weight="bold" font-size="12.5">Slack</text>
+  <text x="1172" y="588" fill="#8b949e" font-size="11">#sre-oncall</text>
 
   <!-- pods -> Prometheus (scrape) -->
-  <path class="edge" d="M940,356 C992,356 992,331 1033,331" marker-end="url(#arr)"/>
-  <text x="952" y="346" class="lbl">scrape /metrics</text>
+  <path d="M940,356 C992,356 992,331 1033,331" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="952" y="346" fill="#8b949e" font-size="11">scrape /metrics</text>
 
   <!-- Prometheus -> AnalysisTemplate -->
-  <path class="edge" d="M1152,295 V219" marker-end="url(#arr)"/>
-  <text x="1160" y="262" class="lbl">query SLOs</text>
+  <path d="M1152,295 V219" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="1160" y="262" fill="#8b949e" font-size="11">query SLOs</text>
 
   <!-- AnalysisTemplate -> Rollouts (promote/rollback) -->
-  <path class="edge-g" d="M1033,170 H647" marker-end="url(#arrg)"/>
-  <text x="710" y="160" class="lbl" fill="#3fb950">promote</text>
-  <text x="775" y="160" class="lbl" fill="#8b949e">/</text>
-  <text x="785" y="160" class="lbl" fill="#f85149">rollback</text>
+  <path d="M1033,170 H647" fill="none" stroke="#3fb950" stroke-width="2.4" marker-end="url(#arrg)"/>
+  <text x="710" y="160" fill="#3fb950" font-size="11">promote</text>
+  <text x="775" y="160" fill="#8b949e" font-size="11">/</text>
+  <text x="785" y="160" fill="#f85149" font-size="11">rollback</text>
 
   <!-- Prometheus -> Grafana / Alertmanager -->
-  <path class="edge" d="M1090,367 V428" marker-end="url(#arr)"/>
-  <path class="edge" d="M1215,367 V428" marker-end="url(#arr)"/>
+  <path d="M1090,367 V428" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M1215,367 V428" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#arr)"/>
   <!-- Alertmanager -> Slack -->
-  <path class="edge" d="M1215,502 V538" marker-end="url(#arr)"/>
+  <path d="M1215,502 V538" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#arr)"/>
 </svg>

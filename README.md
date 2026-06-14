@@ -164,6 +164,11 @@ before earning more.
 
 ## 4. Architecture
 
+![Architecture diagram](docs/images/architecture.svg)
+
+<details>
+<summary>Text version (ASCII)</summary>
+
 ```
                  GitHub Actions CI                          ArgoCD (GitOps)
    ┌───────────────────────────────────┐         ┌───────────────────────────┐
@@ -179,6 +184,8 @@ before earning more.
                       │                                                      │
                    Grafana                                            Alertmanager → Slack
 ```
+
+</details>
 
 ---
 
