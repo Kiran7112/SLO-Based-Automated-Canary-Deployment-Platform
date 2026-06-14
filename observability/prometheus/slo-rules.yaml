@@ -1,0 +1,60 @@
+# Recording + alerting rules that turn raw app metrics into the SLO signals the
+# canary is judged against (use case section 6). The Argo Rollouts
+# AnalysisTemplate queries the same expressions for its automated gate.
+groups:
+  - name: checkout-slo.recording
+    interval: 15s
+    rules:
+      # 5xx error ratio over a 1-minute rolling window.
+      - record: checkout:error_rate:ratio_1m
+        expr: |
+          sum(rate(http_requests_total{route="/checkout",status=~"5.."}[1m]))
+          /
+          clamp_min(sum(rate(http_requests_total{route="/checkout"}[1m])), 1)
+
+      # p99 request latency in seconds.
+      - record: checkout:latency_p99:seconds_1m
+        expr: |
+          histogram_quantile(
+            0.99,
+            sum(rate(http_request_duration_seconds_bucket{route="/checkout"}[1m])) by (le)
+          )
+
+      # Successful payment rate (business SLO).
+      - record: checkout:payment_success:ratio_1m
+        expr: |
+          sum(rate(payment_success_total[1m]))
+          /
+          clamp_min(sum(rate(payment_attempts_total[1m])), 1)
+
+  - name: checkout-slo.alerts
+    rules:
+      - alert: CheckoutErrorRateHigh
+        expr: checkout:error_rate:ratio_1m > 0.01
+        for: 1m
+        labels:
+          severity: critical
+          slo: error_rate
+        annotations:
+          summary: "Checkout 5xx error rate above 1% SLO"
+          description: "Error rate {{ $value | humanizePercentage }} exceeds the 1% SLO — canary rollback expected."
+
+      - alert: CheckoutLatencyHigh
+        expr: checkout:latency_p99:seconds_1m > 0.5
+        for: 1m
+        labels:
+          severity: critical
+          slo: latency
+        annotations:
+          summary: "Checkout p99 latency above 500ms SLO"
+          description: "p99 latency is {{ $value }}s — canary rollback expected."
+
+      - alert: CheckoutPaymentSuccessLow
+        expr: checkout:payment_success:ratio_1m < 0.99
+        for: 1m
+        labels:
+          severity: critical
+          slo: payment_success
+        annotations:
+          summary: "Checkout payment success below 99% SLO"
+          description: "Payment success {{ $value | humanizePercentage }} below the 99% SLO — canary rollback expected."

@@ -1,0 +1,4 @@
+# Suppress specific CVEs here with a justification and an expiry date so the
+# DevSecOps gate stays meaningful. Example:
+#
+# CVE-2024-12345  # exp:2026-12-31 — base-image only, not reachable from the binary

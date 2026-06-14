@@ -1,0 +1,73 @@
+# The core resource. An Argo Rollout replaces a Deployment and adds a canary
+# strategy: traffic is shifted 5% -> 25% -> 50% -> 100%, and between (and during)
+# steps the checkout-slo-gate AnalysisTemplate continuously checks the SLOs.
+# A failed analysis aborts the rollout and shifts traffic back to stable.
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: checkout
+  namespace: checkout
+  labels:
+    app: checkout
+spec:
+  replicas: 4
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: checkout
+  template:
+    metadata:
+      labels:
+        app: checkout
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: checkout
+          image: ghcr.io/example/slo-canary-checkout/checkout:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: VERSION
+              value: "stable"
+            # A "bad" canary is demoed by overriding ERROR_RATE / EXTRA_LATENCY_MS
+            # on the canary pods (e.g. via a kubectl argo rollouts set image plus
+            # a patched env, or a separate values overlay).
+            - name: ERROR_RATE
+              value: "0.0"
+            - name: EXTRA_LATENCY_MS
+              value: "0"
+          readinessProbe:
+            httpGet: { path: /readyz, port: 8080 }
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: { path: /healthz, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests: { cpu: 100m, memory: 64Mi }
+            limits: { cpu: 500m, memory: 128Mi }
+  strategy:
+    canary:
+      canaryService: checkout-canary
+      stableService: checkout-stable
+      trafficRouting:
+        nginx:
+          stableIngress: checkout
+      # Run the SLO gate for the whole canary lifetime.
+      analysis:
+        templates:
+          - templateName: checkout-slo-gate
+        startingStep: 1        # begin analysis once the first 5% is live
+      steps:
+        - setWeight: 5
+        - pause: { duration: 2m }     # bake at 5% while analysis runs
+        - setWeight: 25
+        - pause: { duration: 2m }
+        - setWeight: 50
+        - pause: { duration: 2m }
+        - setWeight: 100
+        # No final pause: full promotion once all gates pass.

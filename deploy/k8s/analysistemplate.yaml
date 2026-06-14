@@ -1,0 +1,55 @@
+# The SLO gate. Argo Rollouts runs this analysis in the background during the
+# canary; if any metric leaves its success window it marks the run Failed and
+# the Rollout aborts (automatic rollback). Thresholds mirror use case section 6.
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: checkout-slo-gate
+  namespace: checkout
+spec:
+  args:
+    - name: prometheus-addr
+      value: http://prometheus.monitoring.svc.cluster.local:9090
+  metrics:
+    # --- Error rate: 5xx must stay < 1% -----------------------------------
+    - name: error-rate
+      interval: 30s
+      count: 5                 # evaluate 5 times across the canary step
+      failureLimit: 1          # one breach is enough to roll back
+      provider:
+        prometheus:
+          address: "{{args.prometheus-addr}}"
+          query: |
+            sum(rate(http_requests_total{route="/checkout",status=~"5.."}[1m]))
+            /
+            clamp_min(sum(rate(http_requests_total{route="/checkout"}[1m])), 1)
+      successCondition: result < 0.01
+
+    # --- Latency: p99 must stay < 500ms -----------------------------------
+    - name: latency-p99
+      interval: 30s
+      count: 5
+      failureLimit: 1
+      provider:
+        prometheus:
+          address: "{{args.prometheus-addr}}"
+          query: |
+            histogram_quantile(
+              0.99,
+              sum(rate(http_request_duration_seconds_bucket{route="/checkout"}[1m])) by (le)
+            )
+      successCondition: result < 0.5
+
+    # --- Business SLO: payment success >= 99% -----------------------------
+    - name: payment-success-rate
+      interval: 30s
+      count: 5
+      failureLimit: 1
+      provider:
+        prometheus:
+          address: "{{args.prometheus-addr}}"
+          query: |
+            sum(rate(payment_success_total[1m]))
+            /
+            clamp_min(sum(rate(payment_attempts_total[1m])), 1)
+      successCondition: result >= 0.99

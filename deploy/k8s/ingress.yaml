@@ -1,0 +1,24 @@
+# NGINX ingress is the traffic provider Argo Rollouts manipulates. The
+# controller creates a shadow "-canary" ingress and adjusts the
+# nginx.ingress.kubernetes.io/canary-weight annotation to match each step
+# (5/25/50/100), so the split is enforced at the edge.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: checkout
+  namespace: checkout
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "30"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: checkout.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: checkout-stable
+                port:
+                  number: 80

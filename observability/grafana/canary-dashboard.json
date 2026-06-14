@@ -1,0 +1,105 @@
+{
+  "title": "Checkout — Canary vs Stable (SLO)",
+  "uid": "checkout-canary-slo",
+  "tags": ["slo", "canary", "checkout"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "refresh": "10s",
+  "time": { "from": "now-15m", "to": "now" },
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": { "text": "Prometheus", "value": "Prometheus" }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "5xx Error Rate (SLO < 1%)",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "green", "value": null },
+            { "color": "red", "value": 0.01 }
+          ] }
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (rollout_hash) (rate(http_requests_total{route=\"/checkout\",status=~\"5..\"}[1m])) / clamp_min(sum by (rollout_hash) (rate(http_requests_total{route=\"/checkout\"}[1m])), 1)",
+          "legendFormat": "{{rollout_hash}}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "p99 Latency (SLO < 500ms)",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "green", "value": null },
+            { "color": "red", "value": 0.5 }
+          ] }
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.99, sum by (le, rollout_hash) (rate(http_request_duration_seconds_bucket{route=\"/checkout\"}[1m])))",
+          "legendFormat": "{{rollout_hash}}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Payment Success Rate (SLO >= 99%)",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "red", "value": null },
+            { "color": "green", "value": 0.99 }
+          ] }
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(rate(payment_success_total[1m])) / clamp_min(sum(rate(payment_attempts_total[1m])), 1)",
+          "legendFormat": "payment success"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Canary Traffic Weight (%)",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100 } },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max(rollout_info_weights{namespace=\"checkout\"})",
+          "legendFormat": "canary weight"
+        }
+      ]
+    }
+  ]
+}

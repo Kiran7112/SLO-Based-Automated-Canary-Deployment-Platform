@@ -1,0 +1,35 @@
+# Minimal Prometheus config for local/minikube use. In-cluster you would let
+# the kube-prometheus-stack Helm chart manage this; the scrape job below shows
+# how the canary and stable pods are discovered and labelled.
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - /etc/prometheus/rules/slo-rules.yaml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["alertmanager:9093"]
+
+scrape_configs:
+  - job_name: checkout
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names: [checkout]
+    relabel_configs:
+      # Only scrape pods of the checkout app that opt in via annotation.
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: "true"
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        action: keep
+        regex: checkout
+      # Surface the Argo Rollouts pod-template-hash as a "version" hint and the
+      # rollouts role (stable/canary) so dashboards can compare the two.
+      - source_labels: [__meta_kubernetes_pod_label_rollouts_pod_template_hash]
+        target_label: rollout_hash
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod

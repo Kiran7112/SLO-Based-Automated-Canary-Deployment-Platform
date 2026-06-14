@@ -1,0 +1,55 @@
+# Argo Rollouts with the canary strategy needs two Services pointing at the
+# same Rollout: a "stable" Service and a "canary" Service. The controller
+# manages their selectors so the ingress can split traffic between versions.
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkout-stable
+  namespace: checkout
+  labels:
+    app: checkout
+spec:
+  selector:
+    app: checkout
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkout-canary
+  namespace: checkout
+  labels:
+    app: checkout
+spec:
+  selector:
+    app: checkout
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+---
+# Headless metrics service scraped by Prometheus (covers both versions).
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkout-metrics
+  namespace: checkout
+  labels:
+    app: checkout
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+    prometheus.io/path: "/metrics"
+spec:
+  clusterIP: None
+  selector:
+    app: checkout
+  ports:
+    - name: metrics
+      port: 8080
+      targetPort: 8080

@@ -1,0 +1,10 @@
+docs/
+infra/
+observability/
+deploy/
+load/
+security/
+scripts/
+*.md
+.git
+.github

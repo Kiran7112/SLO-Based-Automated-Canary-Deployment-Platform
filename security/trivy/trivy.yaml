@@ -1,0 +1,13 @@
+# Shared Trivy config used both in CI and for local `trivy image --config` runs.
+# The CI gate fails on fixable HIGH/CRITICAL CVEs before an image can be pushed.
+severity:
+  - HIGH
+  - CRITICAL
+vulnerability:
+  ignore-unfixed: true
+scan:
+  scanners:
+    - vuln
+    - secret
+    - misconfig
+exit-code: 1
